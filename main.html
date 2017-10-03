@@ -1,0 +1,126 @@
+<!--
+Solution file for HW7: WebGL
+Comp 630 W'16 - Computer Graphics
+Phillips Academy
+2016-2-19
+
+By James Coombs
+-->
+<html>
+<head>
+  <title>Final Project</title>
+
+
+  <script id="vertex-shader" type="x-shader/x-vertex">
+  // attribute vec4 cubePosition;
+  // attribute vec4 oct1Position;
+  // attribute vec4 oct2Position;
+  // attribute vec4 oct3Position;
+  // attribute vec4 oct4Position;
+  // attribute vec4 oct5Position;
+  // attribute vec4 oct6Position;
+  // attribute vec4 pyrPosition;
+  //
+  // attribute vec4 cubeNormal;
+  // attribute vec4 oct1Normal;
+  // attribute vec4 oct2Normal;
+  // attribute vec4 oct3Normal;
+  // attribute vec4 oct4Normal;
+  // attribute vec4 oct5Normal;
+  // attribute vec4 oct6Normal;
+  // attribute vec4 pyrNormal;
+  //
+  // attribute vec4 cubeColor;
+  // attribute vec4 oct1Color;
+  // attribute vec4 oct2Color;
+  // attribute vec4 oct3Color;
+  // attribute vec4 oct4Color;
+  // attribute vec4 oct5Color;
+  // attribute vec4 oct6Color;
+  // attribute vec4 pyrColor;
+
+  attribute vec4 vPosition;
+  attribute vec4 vNormal;
+  attribute vec4 vColor;
+  uniform vec4 vLight;
+  varying vec4 fColor;
+  uniform mat4 u_xFormation;
+  uniform mat4 u_rotate;
+  uniform mat4 u_camera;
+
+  void
+  main()
+  {
+      // gl_Position = u_rotate*u_xFormation*cubePosition;
+      // gl_Position.cocat( u_rotate*u_xFormation*oct1Position );
+      // gl_Position.cocat( u_rotate*u_xFormation*oct2Position );
+      // gl_Position.cocat( u_rotate*u_xFormation*oct3Position );
+      // gl_Position.cocat( u_rotate*u_xFormation*oct4Position );
+      // gl_Position.cocat( u_rotate*u_xFormation*oct5Position );
+      // gl_Position.cocat( u_rotate*u_xFormation*oct6Position );
+      // gl_Position.cocat( u_xFormation*pyrPosition );
+
+      gl_Position = u_rotate*u_xFormation*vPosition;
+      //gl_Position = u_xFormation*vPosition;
+      gl_Position = u_camera*gl_Position;
+      // gl_Position = gl_Position / gl_Position.w;
+
+      // vNormal = cubeNormal;
+      // vNormal.concat( oct1Normal );
+      // vNormal.concat( oct2Normal );
+      // vNormal.concat( oct3Normal );
+      // vNormal.concat( oct4Normal );
+      // vNormal.concat( oct5Normal );
+      // vNormal.concat( oct6Normal );
+      // vNormal.concat( pyrNormal );
+      //
+      // vColor = cubeColor;
+      // vColor.concat( oct1Color );
+      // vColor.concat( oct2Color );
+      // vColor.concat( oct3Color );
+      // vColor.concat( oct4Color );
+      // vColor.concat( oct5Color );
+      // vColor.concat( oct6Color );
+      // vColor.concat( pyrColor );
+
+      // Evidently the perspective normalization happens behind the scnese already,
+      // so there's no reason to actually code it in.
+      fColor =  0.1+vColor*dot(normalize(u_rotate*u_xFormation*vNormal),normalize(vec4(vLight)));
+      fColor.w = 1.0;
+      // fColor = vec4(0.5,0.5,0.5,1);
+  }
+  </script>
+
+  <script id="fragment-shader" type="x-shader/x-fragment">
+  precision mediump float;
+  varying vec4 fColor;
+
+  void
+  main()
+  {
+      gl_FragColor = fColor;
+  }
+  </script>
+
+  <script type="text/javascript" src="../Common/webgl-utils.js"></script>
+  <script type="text/javascript" src="../Common/initShaders.js"></script>
+  <script type="text/javascript" src="../Common/MV.js"></script>
+  <script type="text/javascript" src="scene.js"></script>
+  </head>
+
+  <body>
+  <canvas id="gl-canvas" width="512" height="512" tabindex='1'>
+  Oops ... your browser doesn't support the HTML5 canvas element
+  </canvas>
+  </body>
+  <audio autoplay loop>
+        <source src="music.mp3">
+  </audio>
+  <p> Use WASD to move the spotlight </p>
+  <p> (Scroll down for more help) </p>
+  <p> Use arrow keys to move the camera</p>
+  <p> Use Page Up to zoom in and Page Down to zoom out </p>
+  <p> Use ' <strong>,</strong> ' and ' <strong>.</strong> ' to change the cube spin rate </p>
+  <p> Use ' <strong>;</strong> ' and ' <strong>'</strong> ' to change the cube levitation rate </p>
+  <p> Use ' <strong>[</strong> ' and ' <strong>]</strong> ' to change the pedastal spin rate </p>
+  </html>
